@@ -11,10 +11,10 @@
 
 | STT | Họ tên | MSSV | Email | GitHub | Vai trò |
 | --: | ------ | ---- | ----- | ------ | ------- |
-|   1 |        |      |       |        |         |
-|   2 |        |      |       |        |         |
-|   3 |        |      |       |        |         |
-|   4 |        |      |       |        |         |
+|   1 |  Khổng Ngọc Anh      |  2A202603974    |  26ai.anhkn2@vinuni.edu.vn     |   kanartificial     |      Người viết code   |
+|   2 | Võ Thị Kim Ý       |2A202603965      |   26ai.yvtk@vinuni.edu.vn    |    KimY22-it    |   Người gán nhãn 1      |
+|   3 | Vương Thu Thảo       |  2A202603966    |   26ai.thaovt@vinuni.edu.vn    |   ThuThaoVuong     | Người kiểm số      |
+|   4 |     Lý Hà Trân Trân   |   2A202603968   |    26ai.tranlht@vinuni.edu.vn   |  TranHa161      |     Người gán nhãn 2    |
 
 Bốn vai của lab:
 
