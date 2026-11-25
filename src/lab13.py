@@ -194,6 +194,62 @@ if __name__ == '__main__':
         phut_hoa_von = (BASELINE * so_viec_tc_pv - token_tool_pv - tien_ll) / (yc_co_ok * LUONG_PHUT)
         print(f'  {nhan:26s} -> Lam lai: {tien_ll:10,.0f} d | Tong: {tong_b4:10,.0f} d | CPS [sim]: {cps_b4:6,.0f} d ({cps_b4 / BASELINE:.2f}x) | Hoa von xem lai <= {phut_hoa_von:.1f} phut')
 
-    # TODO CP4 · Nhiệm vụ D: cỡ mẫu.
-    #   from statsmodels.stats.proportion import proportion_effectsize
-    #   from statsmodels.stats.power import NormalIndPower
+    print('\n=== D1 · Cỡ mẫu cho pilot (baseline=0.70, alpha=0.05, power=0.80, ICC=0.02) ===')
+    from statistics import NormalDist
+    from statsmodels.stats.proportion import proportion_effectsize
+    from statsmodels.stats.power import NormalIndPower
+
+    def co_mau(p1, p2, alpha=0.05, power=0.80):
+        za = NormalDist().inv_cdf(1 - alpha / 2)
+        zb = NormalDist().inv_cdf(power)
+        pb = (p1 + p2) / 2
+        return math.ceil(
+            (za * math.sqrt(2 * pb * (1 - pb))
+             + zb * math.sqrt(p1 * (1 - p1) + p2 * (1 - p2))) ** 2
+            / (p2 - p1) ** 2
+        )
+
+    P1, ALPHA, POWER, ICC = 0.70, 0.05, 0.80, 0.02
+
+    # a) Chia theo yeu cau (+5 diem)
+    n_req_5 = co_mau(P1, 0.75, ALPHA, POWER)
+    print(f'a) Chia theo yeu cau (+5 diem)           : {n_req_5:,d} yc/nhom')
+
+    # b) Chia theo nhan vien, m = 75
+    m_b = 75
+    de_b = 1 + (m_b - 1) * ICC
+    n_staff_b = math.ceil(n_req_5 * de_b)
+    so_nv_nhom = math.ceil(n_staff_b / m_b)
+    print(f'b) Theo nhan vien (m={m_b}, DE={de_b:.2f})      : {n_staff_b:,d} yc/nhom -> {so_nv_nhom} NV/nhom (tong {so_nv_nhom * 2} > 40: KHONG DU)')
+
+    # c) 20 nhan vien moi nhom
+    c_staff = 20
+    n_eff_max_staff = c_staff / ICC
+    print(f'c) 20 nhan vien/nhom (tran c/ICC)        : toi da {n_eff_max_staff:,.0f} < {n_req_5:,d} (KHONG DAT)')
+
+    # d) 6 depot moi nhom
+    c_depot = 6
+    n_eff_max_depot = c_depot / ICC
+    print(f'd) 6 depot/nhom (tran c/ICC)             : toi da {n_eff_max_depot:,.0f} < {n_req_5:,d} (KHONG DAT)')
+
+    # e) Muc chenh 6 diem (+6 diem), 20 nhan vien moi nhom
+    n_req_6 = co_mau(P1, 0.76, ALPHA, POWER)
+    # Giai c_staff * m / (1 + (m - 1) * ICC) >= n_req_6
+    # <=> m * (c_staff - n_req_6 * ICC) >= n_req_6 * (1 - ICC)
+    m_e = math.ceil(n_req_6 * (1 - ICC) / (c_staff - n_req_6 * ICC))
+    de_e = 1 + (m_e - 1) * ICC
+    n_eff_e = c_staff * m_e / de_e
+    print(f'e) Muc chenh +6 diem ({n_req_6:,d}/nhom), 20 NV : m >= {m_e} yc/NV (DE={de_e:.2f}, n_hieu_dung={n_eff_e:.1f})')
+
+    # Power thuc te neu chon n=859 nhung tac dong that chi +5 diem
+    es_5 = proportion_effectsize(0.75, P1)
+    power_5_at_859 = NormalIndPower().power(effect_size=es_5, nobs1=n_req_6, alpha=ALPHA, ratio=1.0)
+    print(f'   Power neu tac dong that chi +5 diem voi n={n_req_6}: {power_5_at_859:.2f}')
+
+    print('\n=== D3 · Tỉ lệ mở lại trong 7 ngày hiện tại (cơ sở đặt luật an toàn) ===')
+    mo_lai_toan_bo = reqs['mo_lai_trong_7_ngay'].mean() * 100
+    so_mo_lai_toan_bo = int(reqs['mo_lai_trong_7_ngay'].sum())
+    mo_lai_pv = pham_vi['mo_lai_trong_7_ngay'].mean() * 100
+    so_mo_lai_pv = int(pham_vi['mo_lai_trong_7_ngay'].sum())
+    print(f'Toan bo 1.200 yc              : {mo_lai_toan_bo:.2f}% ({so_mo_lai_toan_bo}/{len(reqs)})')
+    print(f'Pham vi noi_dia + hang_nang   : {mo_lai_pv:.2f}% ({so_mo_lai_pv}/{len(pham_vi)})')
