@@ -64,32 +64,55 @@ Số tính bằng `src/lab13.py`. Mọi con số tính từ cột `_simulated` g
 
 | Kịch bản | Cách tính | Chi phí mỗi việc thành công | Thay đổi (%) |
 | --- | --- | ---: | ---: |
-| Giá token gấp đôi | 52 đ và 260 đ cho 1.000 token; giá tool giữ nguyên | ... | ... |
-| Giá token giảm một nửa | 13 đ và 65 đ | ... | ... |
-| Tỉ lệ xem lại gấp đôi | Tiền xem lại × 2 | ... | ... |
-| Tỉ lệ xem lại giảm một nửa | Tiền xem lại ÷ 2 | ... | ... |
-| Số ca làm lại gấp đôi | Tiền làm lại × 2 | ... | ... |
-| Số ca làm lại giảm một nửa | Tiền làm lại ÷ 2 | ... | ... |
-| Lương nhân viên tăng 25% | 2.500 đ mỗi phút | ... | ... |
-| Chỉ cho chạy tối đa 2 lần | Bỏ lần chạy có attempt > 2; yêu cầu có so_lan_chay > 2 coi là chuyen_nhan_vien | ... | ... |
-| Chỉ cho chạy 1 lần | Như trên với giới hạn 1 | ... | ... |
+| Giá token gấp đôi | 52 đ và 260 đ cho 1.000 token; giá tool giữ nguyên | 4.723 đ | +5,6% |
+| Giá token giảm một nửa | 13 đ và 65 đ; giá tool giữ nguyên | 4.346 đ | -2,8% |
+| Tỉ lệ xem lại gấp đôi | Tiền xem lại × 2 | 6.292 đ | +40,7% |
+| Tỉ lệ xem lại giảm một nửa | Tiền xem lại ÷ 2 | 3.562 đ | -20,3% |
+| Số ca làm lại gấp đôi | Tiền làm lại × 2 | 6.787 đ | +51,8% |
+| Số ca làm lại giảm một nửa | Tiền làm lại ÷ 2 | 3.315 đ | -25,9% |
+| Lương nhân viên tăng 25% | 2.500 đ mỗi phút | 5.506 đ | +23,1% |
+| Chỉ cho chạy tối đa 2 lần | Bỏ lần chạy có attempt > 2; yêu cầu có so_lan_chay > 2 coi là chuyen_nhan_vien | 4.237 đ | -5,2% |
+| Chỉ cho chạy 1 lần | Như trên với giới hạn 1 | 4.111 đ | -8,1% |
+
+**Nhận xét:** Chi phí làm lại là yếu tố ảnh hưởng lớn nhất đến CPS (+51,8% khi tăng gấp đôi), tiếp theo là chi phí xem lại (+40,7%). Trong khi đó, giá token tăng gấp đôi chỉ khiến CPS tăng 5,6%. Vì vậy, nhóm nên ưu tiên tối ưu quy trình xem lại và giảm số ca làm lại thay vì chỉ tập trung giảm chi phí token.
+
 
 ## B2 · Đổi một cặp và xếp hạng
 
 - Giá token gấp đôi cùng lúc tỉ lệ xem lại gấp đôi: ...
 - Xếp hạng ba yếu tố ảnh hưởng mạnh nhất: 1. ... · 2. ... · 3. ...
 
+- Giá token gấp đôi cùng lúc tỉ lệ xem lại gấp đôi: **6.543 đ (+46,3%)** [sim].
+- Xếp hạng ba yếu tố ảnh hưởng mạnh nhất:
+  1. Số ca làm lại tăng gấp đôi: **+51,8%**.
+  2. Tỉ lệ xem lại tăng gấp đôi: **+40,7%**.
+  3. Lương nhân viên tăng 25%: **+23,1%**.
+
 ## B3 · Giới hạn chạy lại có thật sự rẻ hơn
 
 | Giới hạn | Tổng chi phí trợ lý | Số yêu cầu không thành công | Chi phí cả hệ thống | Chi phí mỗi việc thành công |
 | --- | ---: | ---: | ---: | ---: |
-| 1 lần | ... | ... | ... | ... |
-| 2 lần | ... | ... | ... | ... |
-| 3 lần | ... | ... | ... | ... |
+| 1 lần | 3.621.781 đ [sim] | 319 | 7.449.781 đ [sim] | 4.111 đ [sim] |
+| 2 lần | 4.093.220 đ [sim] | 234 | 6.901.220 đ [sim] | 4.237 đ [sim] |
+| 3 lần | 4.373.585 đ [sim] | 222 | 7.037.585 đ [sim] | 4.472 đ [sim] |
 
 - Giới hạn nào rẻ nhất cho công ty? Có trùng với giới hạn cho chi phí mỗi việc thành công thấp nhất không? ...
+
+- **Giới hạn 2 lần chạy rẻ nhất cho công ty**, với chi phí cả hệ thống là 6.901.220 đ.
+- Không trùng với giới hạn có CPS thấp nhất: giới hạn 1 lần có CPS thấp nhất (4.111 đ), nhưng có tới 319 yêu cầu không thành công và chi phí cả hệ thống cao nhất (7.449.781 đ).
+- Giới hạn 3 lần giúp giảm số yêu cầu thất bại xuống 222, nhưng chi phí cả hệ thống tăng lên 7.037.585 đ.
+
+**Kết luận:** Giới hạn 2 lần chạy là phương án cân bằng tốt nhất giữa chi phí trợ lý và chi phí xử lý các yêu cầu không thành công.
+
 
 ## B4 · Nếu phải xem lại tất cả
 
 - Chi phí mỗi việc thành công khi xem lại 100% (`noi_dia` + `hang_nang`), so với 12.000 đ: ...
 - Kết quả này nói gì về thứ pilot cần học được? ...
+
+- Chi phí mỗi việc thành công khi xem lại 100% (`noi_dia` + `hang_nang`), so với 12.000 đ:
+  - Kịch bản dễ cho (làm lại 9 phút/ca): **11.743 đ/việc**, tương đương 0,98 lần baseline, thấp hơn baseline một chút.
+  - Kịch bản theo thời gian làm lại trung bình thực tế (15,3 phút/ca): **12.415 đ/việc**, tương đương 1,03 lần baseline, cao hơn baseline khoảng 3,5%.
+  - Thời gian xem lại hòa vốn lần lượt không quá 5,1 phút/ca và 4,8 phút/ca.
+
+- Kết quả này cho thấy hiệu quả kinh tế của trợ lý phụ thuộc rất lớn vào thời gian nhân viên phải xem lại và làm lại. Nếu phải xem lại toàn bộ yêu cầu và thời gian làm lại theo mức trung bình thực tế, chi phí trợ lý có thể cao hơn phương án nhân viên tự xử lý. Vì vậy, pilot cần đo lường thực tế thời gian review, tỷ lệ rework, thời gian xử lý lại và tỷ lệ thành công cuối cùng. Mục tiêu không chỉ là giảm chi phí token mà còn phải giảm khối lượng công việc thủ công của nhân viên.
