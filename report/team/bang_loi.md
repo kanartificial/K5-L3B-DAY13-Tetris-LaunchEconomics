@@ -13,9 +13,9 @@ Người gắn nhãn 1: Võ Thị Kim Ý · Người gắn nhãn 2: Lý Hà Trâ
 | 3 | Ngữ cảnh | Ngữ cảnh | Có | Ngữ cảnh |
 | 4 | Giới hạn hệ thống | Giới hạn hệ thống | Có | Giới hạn hệ thống |
 | 5 | Ngầm | Ngầm | Có | Ngầm |
-| 6 | Do người dùng | Hệ thống | Không | ... |
+| 6 | Do người dùng | Hệ thống | Không | Do người dùng |
 | 7 | Hệ thống | Hệ thống | Có | Hệ thống |
-| 8 | Ngữ cảnh | Hệ thống | Không | ... |
+| 8 | Ngữ cảnh | Hệ thống | Không | Hệ thống |
 | 9 | Do người dùng | Do người dùng | Có | Do người dùng |
 | 10 | Ngữ cảnh | Ngữ cảnh | Có | Ngữ cảnh |
 | 11 | Giới hạn hệ thống | Giới hạn hệ thống | Có | Giới hạn hệ thống |
@@ -27,7 +27,7 @@ Người gắn nhãn 1: Võ Thị Kim Ý · Người gắn nhãn 2: Lý Hà Trâ
 | 17 | Ngầm | Ngầm | Có | Ngầm |
 | 18 | Ngữ cảnh | Ngữ cảnh | Có | Ngữ cảnh |
 | 19 | Giới hạn hệ thống | Giới hạn hệ thống | Có | Giới hạn hệ thống |
-| 20 | Ngầm | Hệ thống | Không | ... |
+| 20 | Ngầm | Hệ thống | Không | Hệ thống |
 
 **Tỉ lệ đồng thuận:** 17 / 20 = 85%
 
@@ -35,9 +35,9 @@ Người gắn nhãn 1: Võ Thị Kim Ý · Người gắn nhãn 2: Lý Hà Trâ
 
 Mỗi ca không trùng một câu. Đồng thuận dưới 80% thì ghi định nghĩa đã viết lại.
 
-- **Ca 6:** ...
-- **Ca 8:** ...
-- **Ca 20:** ...
+- **Ca 6:** gốc là do khách chọn sai mục ("Hoàn phí giao trễ" -> "Yêu cầu trả hàng").
+- **Ca 8:** trích dẫn sai có thể nhìn thấy được.
+- **Ca 20:** hoàn tiền 2 lần cho cùng một đơn vì thiếu khóa, nhân viên bắt được.
 
 ## Bảng khắc phục cho 5 ca, mỗi loại một ca
 
