@@ -30,7 +30,7 @@ Dựng hồ sơ launch v0 cho trợ lý hoàn phí LogiX-VN để hội đồng 
 - Pilot chia theo nhân viên, 20 người mỗi nhóm, mức chênh 6 điểm, 859 mẫu hiệu dụng mỗi nhóm; power 0,64 nếu tác động thật là 5 điểm.
 - Chỉ số trong đợt chạy thử: chính 82,83%, bỏ qua gợi ý 27,12%, mở lại 7 ngày 4,25%.
 - **Đề xuất: Go có điều kiện** (bốn điều kiện, mỗi điều kiện có vai trò phụ trách, trong `ho_so_launch_v0.md`).
-- Kết quả duyệt chéo nhóm nhận được từ hội đồng: ...
+- Kết quả duyệt chéo nhóm nhận được từ hội đồng: Nhóm NhomTVA chấm 25/30 điểm, phần Đề xuất khớp bằng chứng mất 5 điểm do còn bỏ qua 1 con số bất lợi 
 
 ## 5. Khó khăn và cách xử lý
 
