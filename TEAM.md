@@ -50,3 +50,22 @@ Sao chép mục dưới đây cho từng thành viên.
 ### Bằng chứng
 
 -
+
+## LyHaTranTran-2A202603968
+
+### Phần việc phụ trách
+
+- Người gắn nhãn 2 kiêm giữ hồ sơ: gắn nhãn độc lập 20 ca lỗi ở CP3; điền `report/team/ho_so_launch_v0.md` từ CP1 đến CP5.
+
+### Đóng góp cụ thể
+
+- Gắn nhãn độc lập 20 ca lỗi theo năm loại PAIR; so với người gắn nhãn 1 được 17/20 (85%), cùng thống nhất ba ca lệch 6, 8, 20.
+- Viết bảng khắc phục 5 ca (1, 2, 3, 11, 12) trong `report/team/bang_loi.md`.
+- Gỡ xung đột merge `bang_loi.md` giữa hai bộ nhãn, giữ đúng bộ nhãn độc lập người gắn nhãn 1 đã commit.
+- Điền đủ bảy mục và đề xuất Go có điều kiện trong `report/team/ho_so_launch_v0.md`.
+- Điền phần chú thích D1, D2 trong `report/team/pilot_plan.yaml` và bản nháp `report/team/group_report.md`.
+
+### Bằng chứng
+
+- Commit `e17a201`, `a06716c`, `dbd5754`, `15c1280`; PR #1 (`ho-so-launch-v0`).
+- File: `report/team/ho_so_launch_v0.md`, `report/team/bang_loi.md` (cột nhãn người 2, bảng khắc phục), `report/team/group_report.md`.
