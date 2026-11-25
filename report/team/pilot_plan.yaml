@@ -3,22 +3,22 @@
 # Kiểm tra đọc được: python -c "import yaml; yaml.safe_load(open('../report/team/pilot_plan.yaml'))"
 #
 # D1 · Cỡ mẫu (baseline 0,70; mục tiêu +5 điểm; alpha 0,05; power 0,8; ICC 0,02)
-#   a) Chia theo yêu cầu:
-#   b) Theo nhân viên, m = 75:
-#   c) 20 nhân viên mỗi nhóm:
-#   d) 6 depot mỗi nhóm:
-#   e) Mức chênh 6 điểm (859 mỗi nhóm), 20 nhân viên mỗi nhóm:
+#   a) Chia theo yêu cầu: 1.251 yêu cầu mỗi nhóm (0,70 -> 0,75).
+#   b) Theo nhân viên, m = 75: DE = 1 + 74 x 0,02 = 2,48; 1.251 x 2,48 = 3.103 mỗi nhóm -> 42 nhân viên mỗi nhóm, tổng 84 > 40: không đủ người.
+#   c) 20 nhân viên mỗi nhóm: cỡ mẫu hiệu dụng tối đa 20 / 0,02 = 1.000 < 1.251: không đạt câu a.
+#   d) 6 depot mỗi nhóm: cỡ mẫu hiệu dụng tối đa 6 / 0,02 = 300 < 1.251: không đạt.
+#   e) Mức chênh 6 điểm (859 mỗi nhóm), 20 nhân viên mỗi nhóm: m >= 299 yêu cầu mỗi nhân viên (DE 6,96; hiệu dụng 859,2).
 #
 # D2 · Năm câu kiểm tra "tách được tác động" với cách chia đã chọn (mỗi câu một dòng):
-#   1. Đối chứng chạy cùng thời gian:
-#   2. Chia ngẫu nhiên hay do người chọn:
-#   3. Ảnh hưởng gián tiếp và cách giảm:
-#   4. Chỉ số chính, ngưỡng, ngày quyết định đã viết trước:
-#   5. Ít nhất 20 cụm mỗi nhóm:
+#   1. Đối chứng chạy cùng thời gian: có, 20 nhân viên đối chứng làm cùng tuần, cùng 6 depot với nhóm dùng trợ lý.
+#   2. Chia ngẫu nhiên hay do người chọn: ngẫu nhiên theo staff_id bằng code có seed ghi trước, phân tầng theo depot.
+#   3. Ảnh hưởng gián tiếp và cách giảm: nhân viên cùng depot có thể chia sẻ cách dùng; giới hạn quyền trợ lý theo tài khoản staff_id và ghi log lượt mở.
+#   4. Chỉ số chính, ngưỡng, ngày quyết định đã viết trước: có, dong_trong_24h_khong_mo_lai_7_ngay, mức chênh 6 điểm, quyết định ngày 2027-01-05.
+#   5. Ít nhất 20 cụm mỗi nhóm: có, đúng 20 nhân viên (cụm) mỗi nhóm.
 #
-# Đánh đổi đã chấp nhận (nếu cách chia chưa đạt cả hai điều kiện):
+# Đánh đổi đã chấp nhận (nếu cách chia chưa đạt cả hai điều kiện): không đủ người để thấy mức 5 điểm, nên chỉ phát hiện được mức chênh 6 điểm; nếu tác động thật là 5 điểm thì power chỉ 0,64. Giám đốc vận hành ký chấp nhận trước khi chạy.
 #
-# Tỉ lệ mo_lai_trong_7_ngay hiện tại và ngưỡng an toàn đã chọn:
+# Tỉ lệ mo_lai_trong_7_ngay hiện tại và ngưỡng an toàn đã chọn: 4,25% (51/1.200), phạm vi pilot 3,97% (39/982); ngưỡng dừng là cao hơn đối chứng từ 2 điểm hoặc vượt 6%, nên mức hiện tại không làm pilot dừng ngay tuần đầu.
 
 pilot:
   owner: "Giám đốc vận hành LogiX-VN"                      # một người có tên vai trò, không ghi "cả đội"
