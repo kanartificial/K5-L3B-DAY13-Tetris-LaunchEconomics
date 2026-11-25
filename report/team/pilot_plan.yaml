@@ -21,31 +21,46 @@
 # Tỉ lệ mo_lai_trong_7_ngay hiện tại và ngưỡng an toàn đã chọn:
 
 pilot:
-  owner: "?"                      # một người có tên vai trò, không ghi "cả đội"
-  scope: "?"                      # loại yêu cầu nào, depot nào; dựa vào kết quả A3
+  owner: "Giám đốc vận hành LogiX-VN"                      # một người có tên vai trò, không ghi "cả đội"
+  scope: "Chỉ triển khai với yêu cầu noi_dia và hang_nang tại 6 depot được chọn. CPS lần lượt là 2.696đ (0.22x) và 8.221đ (0.69x) so với baseline 12.000đ [simulated]. Loại quoc_te (22.515đ, 1.88x) và doi_tac (10.215đ, 0.85x) khỏi phạm vi pilot."                      # loại yêu cầu nào, depot nào; dựa vào kết quả A3
   assignment:
-    unit: "?"                     # request | staff | depot
+    unit: "staff"                     # request | staff | depot
     control_share: 0.5
     randomized: true
   rollout: [0.10, 0.25, 0.50]     # mỗi bước một tuần
   primary_metric:
     name: dong_trong_24h_khong_mo_lai_7_ngay
     baseline: 0.70
-    mde: 0.05
+    mde: 0.06
     alpha: 0.05
     power: 0.80
-    n_per_arm: "?"
-    design_effect: "?"            # 1 nếu chia theo yêu cầu
-    clusters_per_arm: "?"         # để trống nếu chia theo yêu cầu
+    n_per_arm: 859
+    design_effect: 6.96            # 1 nếu chia theo yêu cầu
+    clusters_per_arm: 20         # để trống nếu chia theo yêu cầu
   identifiability:
-    concurrent_control: "?"
-    spillover_risk: "?"
-    predeclared: "?"
+    concurrent_control: "Có. Nhóm đối chứng gồm 20 nhân viên làm việc cùng thời gian, cùng tuần và cùng 6 depot với nhóm trợ lý."
+    spillover_risk: "Có nguy cơ nhân viên trong cùng depot chia sẻ câu trả lời hoặc cách sử dụng trợ lý. Giảm thiểu bằng quyền truy cập theo tài khoản, giới hạn quyền sử dụng theo staff_id và ghi log lượt mở trợ lý."
+    predeclared: "Chốt trước khi bắt đầu pilot: chỉ số chính dong_trong_24h_khong_mo_lai_7_ngay, baseline 0.70, mục tiêu chênh 6 điểm phần trăm, alpha 0.05, power 0.80, ba luật dừng an toàn và ngày quyết định 2027-01-05."
   stop_rules:
-    - "NẾU ? TRONG ? THÌ ? KHÔNG THÌ ?"
-    - "NẾU ? TRONG ? THÌ ? KHÔNG THÌ ?"
-    - "NẾU ? TRONG ? THÌ ? KHÔNG THÌ ?"
-  interim_looks: "chỉ kiểm tra chỉ số an toàn"
-  rollback: "?"                   # ai bấm, mất bao lâu, khách được phục vụ bằng gì
-  decision_date: "?"
-  simulated_inputs: ["?"]         # liệt kê mọi con số giả lập đã dùng
+    - "NẾU tỷ lệ mở lại trong 7 ngày của nhóm trợ lý cao hơn nhóm đối chứng từ 2 điểm phần trăm trở lên hoặc vượt 6%, hoặc xuất hiện ít nhất 1 ca hoàn trùng TRONG 3 ngày liên tiếp THÌ Giám đốc vận hành tắt trợ lý trong 30 phút KHÔNG THÌ không được chuyển sang bước rollout tiếp theo."
+    - "NẾU chi phí mỗi việc thành công lớn hơn 8.000đ TRONG 2 tuần liên tiếp THÌ PM thu hẹp phạm vi về noi_dia và giới hạn tối đa 2 lần chạy KHÔNG THÌ không được mở rộng sang hang_nang."
+    - "NẾU tỷ lệ bỏ qua gợi ý (sua + bo) lớn hơn 40% TRONG 1 tuần THÌ Trưởng nhóm CSKH phỏng vấn 5 nhân viên trong 3 ngày KHÔNG THÌ không được chuyển sang bước rollout tiếp theo."
+  interim_looks: "Chỉ kiểm tra các chỉ số an toàn trong quá trình pilot; không kiểm định sớm chỉ số hiệu quả chính để tránh ảnh hưởng đến quyết định thống kê cuối cùng."
+  rollback: "Giám đốc vận hành LogiX-VN có quyền bấm cờ tắt trợ lý. Việc tắt có hiệu lực trong vòng 30 phút. Sau rollback, toàn bộ yêu cầu hoàn phí được chuyển về quy trình nhân viên tự xử lý, đảm bảo khách hàng vẫn được phục vụ."
+  decision_date: "2027-01-05"
+  simulated_inputs:
+    - "Toàn bộ dữ liệu logix_requests.csv và logix_runs.csv là dữ liệu giả lập."
+    - "CPS noi_dia: 2.696đ/việc thành công."
+    - "CPS hang_nang: 8.221đ/việc thành công."
+    - "CPS quoc_te: 22.515đ/việc thành công."
+    - "CPS doi_tac: 10.215đ/việc thành công."
+    - "Tỷ lệ mở lại 7 ngày toàn bộ: 4.25% (51/1200)."
+    - "Tỷ lệ mở lại 7 ngày trong phạm vi noi_dia và hang_nang: 3.97% (39/982)."
+    - "Baseline chỉ số chính: 0.70; mục tiêu thiết kế ban đầu: tăng 5 điểm phần trăm."
+    - "Mức chênh 6 điểm phần trăm được chọn để phù hợp giới hạn 20 nhân viên mỗi nhóm."
+    - "ICC: 0.02; 20 nhân viên mỗi nhóm; tối thiểu 299 yêu cầu mỗi nhân viên."
+    - "Design effect: 6.96; cỡ mẫu hiệu dụng: 859 mỗi nhóm."
+    - "Power nếu tác động thực tế chỉ tăng 5 điểm phần trăm: 0.64."
+    - "Ngưỡng an toàn mở lại: cao hơn đối chứng 2 điểm phần trăm hoặc vượt trần tuyệt đối 6%."
+    - "Ngưỡng chi phí: 8.000đ/việc thành công."
+    - "Ngưỡng bỏ qua gợi ý: 40%."
