@@ -128,7 +128,72 @@ if __name__ == '__main__':
         tong_cps = kq_pv['cps'] + co_dinh_moi_viec
         print(f'{nhan:18s} | TC/thang: {viec_tc_thang:8,.0f} | Co dinh/viec: {co_dinh_moi_viec:6,.0f} d | CPS+CD [sim]: {tong_cps:6,.0f} d ({tong_cps / BASELINE:.2f}x)')
 
-    # TODO CP2 · Nhiệm vụ B: đổi từng yếu tố, ghi vào bảng độ nhạy.
+    print('\n=== B1 · Bảng độ nhạy (đổi từng yếu tố) ===')
+    kich_ban = {
+        'Gia token gap doi':      dict(gia_vao=52, gia_ra=260),
+        'Gia token giam mot nua': dict(gia_vao=13, gia_ra=65),
+        'Xem lai gap doi':        dict(he_so_xem_lai=2.0),
+        'Xem lai giam mot nua':   dict(he_so_xem_lai=0.5),
+        'Lam lai gap doi':        dict(he_so_lam_lai=2.0),
+        'Lam lai giam mot nua':   dict(he_so_lam_lai=0.5),
+        'Luong tang 25%':         dict(luong_phut=2500),
+        'Toi da 2 lan chay':      dict(max_lan_chay=2),
+        'Chi 1 lan chay':         dict(max_lan_chay=1),
+    }
+    goc_cps = ket_qua['cps']
+    print(f'{"Goc (A2)":25s} {goc_cps:8,.0f} d')
+    kq_b1 = {}
+    for ten, kw in kich_ban.items():
+        cps = mo_hinh(runs, reqs, **kw)['cps']
+        pct = (cps / goc_cps - 1) * 100
+        kq_b1[ten] = (cps, pct)
+        print(f'{ten:25s} {cps:8,.0f} d ({pct:+6.1f}%)')
+
+    # Tu kiem tra tinh doi xung giam mot nua == -1/2 gap doi
+    for cap_doi, cap_nua in [
+        ('Gia token gap doi', 'Gia token giam mot nua'),
+        ('Xem lai gap doi', 'Xem lai giam mot nua'),
+        ('Lam lai gap doi', 'Lam lai giam mot nua'),
+    ]:
+        assert abs(kq_b1[cap_nua][1] + kq_b1[cap_doi][1] / 2) < 1e-9
+
+    print('\n=== B2 · Đổi một cặp và xếp hạng ===')
+    cps_cap = mo_hinh(runs, reqs, gia_vao=52, gia_ra=260, he_so_xem_lai=2.0)['cps']
+    pct_cap = (cps_cap / goc_cps - 1) * 100
+    print(f'Token x2 + Xem lai x2 [sim]: {cps_cap:,.0f} d ({pct_cap:+.1f}%)')
+    print('Xep hang 3 yeu to manh nhat: 1. So ca lam lai (+51.8%) | 2. Ti le xem lai (+40.7%) | 3. Luong nhan vien (+23.1%)')
+
+    print('\n=== B3 · Giới hạn chạy lại có thật sự rẻ hơn ===')
+    print(f'{"Gioi han":10s} {"Tong tro ly [sim]":>18s} {"Khong TC":>10s} {"Ca he thong [sim]":>18s} {"CPS [sim]":>12s}')
+    for gh in [1, 2, 3]:
+        kq_gh = mo_hinh(runs, reqs, max_lan_chay=gh)
+        khong_tc_gh = len(reqs) - kq_gh['thanh_cong']
+        ca_he_thong = kq_gh['tong'] + khong_tc_gh * BASELINE
+        print(f'{str(gh) + " lan":10s} {kq_gh["tong"]:18,.0f} {khong_tc_gh:10d} {ca_he_thong:18,.0f} {kq_gh["cps"]:12,.0f}')
+
+    print('\n=== B4 · Nếu phải xem lại tất cả (noi_dia + hang_nang) ===')
+    runs_pv = runs[runs['request_id'].isin(pham_vi['request_id'])]
+    yc_co_ok = runs_pv.loc[runs_pv['status'] == 'ok', 'request_id'].nunique()
+    so_ca_lam_lai_pv = int((pham_vi['ket_qua'] == 'lam_lai').sum())
+    so_viec_tc_pv = int((pham_vi['ket_qua'] == 'thanh_cong').sum())
+    token_tool_pv = kq_pv['token'] + kq_pv['tool']
+    tien_xem_lai_100 = yc_co_ok * 5 * LUONG_PHUT
+
+    phut_ll_tb = reqs.loc[reqs['ket_qua'] == 'lam_lai', 'phut_lam_lai_simulated'].mean()
+    phut_ll_tv = reqs.loc[reqs['ket_qua'] == 'lam_lai', 'phut_lam_lai_simulated'].median()
+
+    print(f'So YC pham vi: {len(pham_vi)} | YC co it nhat 1 lan ok: {yc_co_ok} | Ca lam_lai: {so_ca_lam_lai_pv} | TC: {so_viec_tc_pv}')
+    print(f'Token + tool pham vi: {token_tool_pv:,.0f} d | Xem lai 100% (5 phut): {tien_xem_lai_100:,.0f} d')
+    print(f'Phut lam lai thuc te [sim] (toan bo ca lam_lai): TB = {phut_ll_tb:.1f} phut, trung vi = {phut_ll_tv:.1f} phut')
+
+    for nhan, phut_ll in [('De cho (9 phut/ca)', 9.0), (f'Thuc te TB ({phut_ll_tb:.1f} phut/ca)', phut_ll_tb)]:
+        tien_ll = so_ca_lam_lai_pv * phut_ll * LUONG_PHUT
+        tong_b4 = token_tool_pv + tien_xem_lai_100 + tien_ll
+        cps_b4 = tong_b4 / so_viec_tc_pv
+        # Muc hoa von phut xem lai de cps_b4 <= BASELINE
+        phut_hoa_von = (BASELINE * so_viec_tc_pv - token_tool_pv - tien_ll) / (yc_co_ok * LUONG_PHUT)
+        print(f'  {nhan:26s} -> Lam lai: {tien_ll:10,.0f} d | Tong: {tong_b4:10,.0f} d | CPS [sim]: {cps_b4:6,.0f} d ({cps_b4 / BASELINE:.2f}x) | Hoa von xem lai <= {phut_hoa_von:.1f} phut')
+
     # TODO CP4 · Nhiệm vụ D: cỡ mẫu.
     #   from statsmodels.stats.proportion import proportion_effectsize
     #   from statsmodels.stats.power import NormalIndPower
